@@ -1,9 +1,17 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template
+from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
+
+from people_counter2 import Motion
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/pi/dbs//peopleCount.db'
+app.config['SECRET_KEY'] = 'qwertyuiop[];lkjhgfdsazxcvbnm,../'
+
 db = SQLAlchemy(app)
+socketio = SocketIO(app)
+
+motion = Motion()
 
 
 class People(db.Model):
@@ -48,5 +56,10 @@ def create():
     return 'created Database'
 
 
+@app.route('/test_motion')
+def test_motion():
+    motion.check_motion()
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    socketio.run(host='0.0.0.0', port=5000)

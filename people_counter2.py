@@ -11,17 +11,19 @@ class Motion(object):
         self.counter = 0
         self.peoplecount = 0
 
-    def check_motion(self):
-        try:
-            print('pir module test (ctrl+c to exit)')
-            time.sleep(1)
-            print('ready')
-            while True:
-                if gpio.input(self.pir_pin):
-                    print ('motion detected')
-                else:
-                    print ('0')
-                time.sleep(1)
-        except KeyboardInterrupt:
-            print('quit')
-            gpio.cleanup()
+    def start_sensing(self):
+        # print('pir module test (ctrl+c to exit)')
+        # time.sleep(1)
+        # print('ready')
+        # while True:
+        if gpio.input(self.pir_pin):
+            # print ('motion detected')
+            return True
+        else:
+            # print ('0')
+            return False
+        # time.sleep(1)
+
+    def stop_sensing(self):
+        print('quit')
+        gpio.cleanup()

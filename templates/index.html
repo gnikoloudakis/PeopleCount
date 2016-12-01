@@ -2,23 +2,25 @@
 <html lang="en">
 <style>
     body {
-        margin-top: -82%;
+        margin-top: -72%;
     }
 </style>
 <head style="width: 100%;height: 100%">
     <script type="text/javascript" src="/static/js/socket.io.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
 
     <meta charset="UTF-8">
     <title>People Count</title>
 </head>
 <body>
-<p id="people_num" style="font-size: 1000px; text-align: center; font-weight: bolder">{{ people }}</p>
+<p id="people_num" style="font-size: 1000px; text-align: center; font-weight: bolder">-</p>
 
 </body>
 <script type="text/javascript" charset="utf-8">
-    var socket = io.connect('http://' + document.domain + ':5000');
+    var socket = io.connect('http://' + document.domain + ':'+ location.port);
     socket.on('more_people', function (people) {
-                $("#people_num").innerHTML(parseInt(people));
-    })
+                $("#people_num").html(parseInt(people['people_count']));
+    });
 </script>
 </html>

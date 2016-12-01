@@ -1,3 +1,4 @@
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
@@ -11,7 +12,10 @@ app.config['SECRET_KEY'] = 'qwertyuiop[];lkjhgfdsazxcvbnm,../'
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
+sched1 = BackgroundScheduler()
+
 motion = Motion()
+counter = 0
 
 
 class People(db.Model):
@@ -23,6 +27,20 @@ class People(db.Model):
 
     def __repr__(self):
         return '<People Count is: %r>' % self.count
+
+
+def check_people():
+    # print(motion.start_sensing())
+    if motion.start_sensing():
+        global counter
+        counter += 1
+        socketio.emit('more_people', {'people_count': counter})
+        print(counter)
+    else:
+        # print(False)
+        pass
+
+sched1.add_job(check_people, 'interval', seconds=1, id='count_people')
 
 
 @app.route('/')
@@ -58,8 +76,10 @@ def create():
 
 @app.route('/test_motion')
 def test_motion():
-    motion.check_motion()
+    pass
 
 
 if __name__ == '__main__':
-    socketio.run(host='0.0.0.0', port=5000)
+    sched1.start()
+    # socketio.run(host='0.0.0.0', port=5000)
+    socketio.run(app, host='0.0.0.0', port=5000)

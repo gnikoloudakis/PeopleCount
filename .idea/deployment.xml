@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="Raspberry_people_counter">
+    <serverData>
+      <paths name="Raspberry_people_counter">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/pi/PeopleCounter_Application" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
